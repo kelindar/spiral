@@ -20,12 +20,5 @@ func lobachevsky(x float64) float64 {
 }
 
 func logspiral(r, k, phi float64) float64 {
-	return r * math.Pow(math.E, .15*phi)
-}
-
-// Polar converts to polar coordinates
-func polar(x, y float64) (r float64, phi float64) {
-	r = math.Sqrt(math.Pow(x, 2) + math.Pow(y, 2))
-	phi = math.Atan2(y, x)
-	return
+	return r * math.Pow(math.E, k*phi)
 }
