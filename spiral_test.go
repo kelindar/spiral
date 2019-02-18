@@ -1,7 +1,6 @@
 package spiral
 
 import (
-	"math"
 	"fmt"
 	"math/rand"
 	"testing"
@@ -19,19 +18,17 @@ var random = rand.New(rand.NewSource(42))
 
 func TestBuilder(t *testing.T) {
 	series := []plotter.XYs{}
-	const arms = 7.0
-	for i := .0; i < arms; i++{
-		t := i / arms * 2*math.Pi
-		series = append(series, drawImage(t))
+	galaxy := Galaxy{ Bulge: 0.55, Tight: 3.7, Error: .05}
+	for _, arm := range galaxy.Generate(random, 7){
+		series = append(series, drawArm(arm))
 	}
 	
 	fmt.Println("saving image")
 	saveImage(t, "output", series...)
 }
 
-func drawImage(t float64) (points plotter.XYs){
-	arm := Arm{ Bulge: 0.55, Tight: 3.7, Pitch: t, Noise: .15}
-	for _, v := range arm.Generate(random, 100){
+func drawArm(arm Arm) (points plotter.XYs){
+	for _, v := range arm.Generate(random, 500){
 		points = append(points, plotter.XY{ X: v.X, Y: v.Y})
 	}
 	return
@@ -45,6 +42,6 @@ func saveImage(t *testing.T, name string, series ...plotter.XYs){
 	for _, s := range series{
 		plotutil.AddScatters(p, s)
 	}
-	err := p.Save(5*vg.Inch, 5*vg.Inch, name +".png"); 
+	err := p.Save(7*vg.Inch, 7*vg.Inch, name +".png"); 
 	assert.NoError(t, err)
 }
