@@ -7,11 +7,6 @@ import (
 
 const twoPi = 2 * math.Pi
 
-// https://arxiv.org/ftp/arxiv/papers/0908/0908.0892.pdf
-func galaxy(phi, scale, b, n float64) float64 {
-	return scale / (math.Log(b * math.Tan(phi/(2*n))))
-}
-
 // Galaxy represents a spiral galaxy generator.
 type Galaxy struct {
 	Bulge float64 // Greater buldge (B) results in greater arm sweep and smaller bar/bulge
@@ -23,8 +18,8 @@ type Galaxy struct {
 func (g Galaxy) Generate(random *rand.Rand, armCount int) (arms []Arm) {
 	for phi := .0; phi < twoPi; phi += twoPi / float64(armCount) {
 		arms = append(arms, Arm{
-			Bulge: g.Bulge, //+ normal(random, .015),
-			Tight: g.Tight, // + normal(random, g.Tight*g.Error),
+			Bulge: g.Bulge,
+			Tight: g.Tight,
 			Pitch: phi + normal(random, twoPi/float64(armCount)*g.Error),
 			Error: g.Error,
 		})
